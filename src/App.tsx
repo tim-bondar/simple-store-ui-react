@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
+﻿import React, {useEffect} from 'react';
 import './App.css';
+import {BrowserRouter as Router, Switch} from 'react-router-dom'
+import Login from './components/Login'
+import Index from './components/Index'
+import GuestRoute from './utils/GuestRoute'
+import PrivateRoute from './utils/PrivateRoute'
+//redux stuff
+import {Provider} from 'react-redux';
+import store from './redux/store';
+import {CheckAuthentication} from './utils/CheckAuthentication'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App: React.FC = () => {
+    useEffect(() => {
+        CheckAuthentication();
+    }, []);
+    return (
+        <div className="App" >
+            <Provider store={store}>
+                <Router>
+                    <Switch>
+                        <PrivateRoute
+                            exact
+                            path="/"
+                            component={Index}/>
+                        <GuestRoute
+                            exact
+                            path="/login"
+                            component={Login}/>
+                    </Switch>
+                </Router>
+            </Provider>
+        </div>
+    )
 }
-
 export default App;
