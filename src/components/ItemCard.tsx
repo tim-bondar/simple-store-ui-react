@@ -13,7 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {disableItem, enableItem} from "../services/storeItems.service";
-import {ModalProps} from "./Index";
+import {ModalProps} from "./Home";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

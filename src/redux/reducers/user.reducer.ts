@@ -1,32 +1,28 @@
-﻿import {SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER} from '../types'
+﻿import {Reducer} from "redux";
+import {User} from "../../models/user";
+import {userAuthenticated, userUnauthenticated} from "../actions/user.actions";
+import {AllActions} from "../store";
 
-const initialState = {
-    authenticated: false,
-    user: {},
-    loading: false
+export interface UserState {
+    user: User | null,
+    authenticated: boolean
 }
 
-export default function (state = initialState, action: any) {
-    switch (action.type) {
-        case SET_AUTHENTICATED:
-            return {
-                ...state,
-                authenticated: true
-            };
-        case SET_UNAUTHENTICATED:
-            return initialState;
-        case SET_USER:
-            return {
-                authenticated: true,
-                loading: false,
-                user: action.user
-            };
-        case LOADING_USER:
-            return {
-                ...state,
-                loading: true
-            };
-        default:
-            return state;
+const initialState: UserState = {
+    user: null,
+    authenticated: false
+}
+
+export const UserReducer: Reducer<UserState, AllActions> =
+    (state = initialState, action) => {
+        switch (action.type) {
+            case userAuthenticated :
+                return {user : action.user, authenticated: true}
+
+            case userUnauthenticated :
+                return {user : null, authenticated: false}
+
+            default:
+                return state;
+        }
     }
-}

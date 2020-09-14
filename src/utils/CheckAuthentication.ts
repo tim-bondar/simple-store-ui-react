@@ -1,22 +1,19 @@
 ﻿import jwtDecode from 'jwt-decode';
-import {logoutUser, getUserData} from '../redux/actions/user.actions'
-import store from '../redux/store';
+import {userAuthenticated, userUnauthenticated} from '../redux/actions/user.actions'
 import axios from 'axios';
-import {SET_AUTHENTICATED} from '../redux/types'
+import {store} from "../redux/store";
+import {User} from "../models/user";
 
 export const CheckAuthentication = () => {
     const authToken = localStorage.token;
     if (authToken) {
         const decodedToken: any = jwtDecode(authToken);
-
-        console.log(decodedToken.iss);
-
         if (decodedToken.exp * 1000 < Date.now()) {
-            store.dispatch(logoutUser());
+            store.dispatch({type: userUnauthenticated});
         } else {
-            store.dispatch({type: SET_AUTHENTICATED});
+            const user = JSON.parse(localStorage.user) as User;
+            store.dispatch({type: userAuthenticated, user: user});
             axios.defaults.headers.common['Authorization'] = authToken;
-            store.dispatch(getUserData());
         }
     }
 }

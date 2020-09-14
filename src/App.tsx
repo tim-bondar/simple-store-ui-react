@@ -1,14 +1,13 @@
 ﻿import React, {useEffect} from 'react';
 import './App.css';
-import {BrowserRouter as Router, Switch} from 'react-router-dom'
-import Login from './components/Login'
-import Index from './components/Index'
-import GuestRoute from './utils/GuestRoute'
-import PrivateRoute from './utils/PrivateRoute'
-//redux stuff
+import {BrowserRouter as Router, Switch} from "react-router-dom"
+import GuestRoute from "./utils/GuestRoute"
+import PrivateRoute from "./utils/PrivateRoute"
 import {Provider} from 'react-redux';
-import store from './redux/store';
 import {CheckAuthentication} from './utils/CheckAuthentication'
+import {store} from "./redux/store";
+import {Login} from "./components/Login";
+import {Home} from "./components/Home";
 
 const App: React.FC = () => {
     useEffect(() => {
@@ -22,7 +21,7 @@ const App: React.FC = () => {
                         <PrivateRoute
                             exact
                             path="/"
-                            component={Index}/>
+                            component={Home}/>
                         <GuestRoute
                             exact
                             path="/login"

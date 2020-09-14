@@ -3,6 +3,7 @@ import {StoreItem} from "../models/storeItem";
 import {CheckAuthentication} from "../utils/CheckAuthentication";
 import {API_URL} from "../envrironment";
 
+// This is not redux-based service
 export const getItems = async () => {
    CheckAuthentication();
    return await axios.get<StoreItem[]>(API_URL+'items');

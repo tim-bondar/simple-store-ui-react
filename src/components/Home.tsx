@@ -12,14 +12,13 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
-import {logoutUser} from '../redux/actions/user.actions'
-import {connect} from "react-redux";
-import {User} from "../models/user";
 import Grid from "@material-ui/core/Grid";
 import {StoreItem} from "../models/storeItem";
 import {getItems} from "../services/storeItems.service";
 import {ItemCard} from "./ItemCard";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
+import {AllActions, useAppSelector, useAsyncDispatch} from "../redux/store";
+import {logout} from "../services/users.service";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -49,12 +48,10 @@ export interface ModalProps {
     item: StoreItem | null
 }
 
-function Index(props: any) {
-    const logout = () => {
-        props.logoutUser();
-    }
+export function Home() {
+    const dispatch = useAsyncDispatch<AllActions>();
 
-    const user = props.user.user as User;
+    const { user } = useAppSelector(x => x.user)
     const classes = useStyles();
 
     const [dataVersion, setNewVersion] = useState(0);
@@ -81,7 +78,7 @@ function Index(props: any) {
         .map((item: StoreItem, i: number) =>
             (<ItemCard
                 item={item}
-                isAdmin={user.isAdmin}
+                isAdmin={user!.isAdmin}
                 refreshFunc={() => setNewVersion(dataVersion + 1)}
                 openModal={setOpen}/>))
 
@@ -99,9 +96,9 @@ function Index(props: any) {
                             Simple Store
                         </Typography>
                         <Typography variant="h6" className={classes.title} style={{textAlign: "right", paddingRight: 20}}>
-                            Hello, {user.firstName} {user.lastName}.
+                            Hello, {user!.firstName} {user!.lastName}.
                         </Typography>
-                        <Button color="inherit" variant="outlined" onClick={logout}>Logout</Button>
+                        <Button color="inherit" variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
                     </Toolbar>
                 </AppBar>
                 <Container style={{paddingTop: 50}}>
@@ -120,14 +117,3 @@ function Index(props: any) {
         </Box>
     );
 }
-
-const mapStateToProps = (state: any) => ({
-    user: state.user,
-    UI: state.UI
-});
-
-const mapActionsToProps = {
-    logoutUser
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Index)

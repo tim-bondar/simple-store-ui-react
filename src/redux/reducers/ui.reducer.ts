@@ -1,30 +1,30 @@
-﻿import {SET_ERRORS, LOADING_UI, CLEAR_ERRORS} from '../types'
+﻿import {Reducer} from "redux";
+import {clearErrors, loadingUI, setErrors} from "../actions/ui.actions";
+import {AllActions} from "../store";
 
-const initialState = {
+export interface UIState {
+    loading: boolean,
+    errors: any
+}
+
+const initialState: UIState = {
     loading: false,
     errors: null
 }
 
-export default function (state = initialState, action: any) {
-    switch (action.type) {
-        case SET_ERRORS:
-            return {
-                ...state,
-                loading: false,
-                errors: action.payload
-            };
-        case CLEAR_ERRORS:
-            return {
-                ...state,
-                loading: false,
-                errors: null
-            };
-        case LOADING_UI:
-            return {
-                ...state,
-                loading: true
-            }
-        default:
-            return state;
+export const UIReducer: Reducer<UIState, AllActions> =
+    (state = initialState, action) => {
+        switch (action.type) {
+            case setErrors :
+                return {errors: action.errors, loading: state.loading}
+
+            case clearErrors :
+                return {errors : null, loading: state.loading}
+
+            case loadingUI :
+                return {errors : state.errors, loading: action.loading}
+
+            default:
+                return state;
+        }
     }
-}
