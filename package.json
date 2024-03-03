@@ -51,5 +51,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "homepage": "https://tim-bondar.github.io/simple-store-ui-react/"
 }
